@@ -8,11 +8,14 @@ set(CMAKE_CXX_EXTENSIONS Off)
 find_package(OpenGL REQUIRED)
 
 add_executable(hello_window 
+    src/glad.c
     src/config.h 
     src/main.cpp 
-    src/glad.c
     src/triangle_mesh.cpp
-    src/triangle_mesh.h)
+    src/triangle_mesh.h
+    src/config.cpp
+    src/material.h
+    src/stb_image.h)
 
 target_include_directories(hello_window PRIVATE dependencies)
 
