@@ -41,7 +41,7 @@ int main()
     unsigned int shader = make_shader("../src/shaders/vertex.glsl",
                                       "../src/shaders/fragment.glsl");
 
-        while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window))
     {
         // poll events
         glfwPollEvents();
@@ -137,6 +137,10 @@ unsigned int make_module(const std::string &filepath, unsigned int module_type)
         glGetShaderInfoLog(shaderModule, 1024, NULL, errorLog);
         std::cout << "Shader Module compilation error:\n"
                   << errorLog << std::endl;
+    }
+    else
+    {
+        std::cout << "Shader Module compilation success: " << filepath << std::endl;
     }
     // std::cout << "Shader Module compilation success: " << filepath << std::endl;
     return shaderModule;
