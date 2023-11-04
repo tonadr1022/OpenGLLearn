@@ -1,4 +1,5 @@
 #include "config.h"
+#include "triangle_mesh.h"
 
 unsigned int make_shader(const std::string &vertex_filepath, const std::string &fragment_filepath);
 
@@ -26,6 +27,7 @@ int main()
     // tell glad to find openGL function definitions
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
+        std::cout << "Failed to initialize GLAD" << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -33,11 +35,13 @@ int main()
     // set color to clear the screen
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+    TriangleMesh *mesh = new TriangleMesh();
+
     // create shader program
     unsigned int shader = make_shader("../src/shaders/vertex.glsl",
                                       "../src/shaders/fragment.glsl");
 
-    while (!glfwWindowShouldClose(window))
+        while (!glfwWindowShouldClose(window))
     {
         // poll events
         glfwPollEvents();
@@ -45,6 +49,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shader);
+        mesh->draw();
 
         glfwSwapBuffers(window);
     }
@@ -59,9 +64,13 @@ int main()
 
 unsigned int make_shader(const std::string &vertex_filepath, const std::string &fragment_filepath)
 {
-
+    //  to store shader modules
     std::vector<unsigned int> shaderModules;
+
+    // add vertex shader module
     shaderModules.push_back(make_module(vertex_filepath, GL_VERTEX_SHADER));
+
+    // add fragment shader module
     shaderModules.push_back(make_module(fragment_filepath, GL_FRAGMENT_SHADER));
 
     // create shader program and attach modules to it
@@ -70,9 +79,10 @@ unsigned int make_shader(const std::string &vertex_filepath, const std::string &
     {
         glAttachShader(shaderProgram, shaderModule);
     }
+    // link the program to create executables that will run on the GPU shaders
     glLinkProgram(shaderProgram);
 
-    // check success
+    // check the linking worked
     int success;
     //  returns in params the value of a parameter for a specific program object.
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -128,6 +138,6 @@ unsigned int make_module(const std::string &filepath, unsigned int module_type)
         std::cout << "Shader Module compilation error:\n"
                   << errorLog << std::endl;
     }
-
+    // std::cout << "Shader Module compilation success: " << filepath << std::endl;
     return shaderModule;
 }
