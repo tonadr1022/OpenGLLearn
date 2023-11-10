@@ -20,9 +20,12 @@ add_executable(hello_window
     src/triangle_mesh.cpp
     src/config.cpp
     src/material.cpp
-    src/shader.cpp
-    src/CameraSystem.cpp
-    src/App.cpp
+    src/systems/camera_system.cpp
+    src/systems/motion_system.cpp
+    src/systems/render_system.cpp
+    src/view/shader.cpp
+    src/controller/app.cpp
+    src/factories/factory.cpp
     )
 
 target_include_directories(hello_window PRIVATE dependencies)

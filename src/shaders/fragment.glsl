@@ -2,17 +2,19 @@
 
 // in vec3 vertexColor;
 in vec2 texCoord;
+in vec3 normal;
 
 out vec4 fragColor;
 
 // texture data + sampler
 uniform sampler2D material; // texture unit 0
-uniform sampler2D mask; // texture unit 1
-uniform float mixValue;
+
+const vec3 sunDirection = normalize(vec3(-1.0, 1.0, 1.0));
 
 void main() {
+    float lightStrength = max(0.2, dot(normal, sunDirection));
     vec3 baseColor = texture(material, texCoord).rgb;
-    fragColor = vec4(baseColor, 1);
+    fragColor = vec4(baseColor * lightStrength, 1.0);
     // float alpha = texture(mask, texCoord).r;
     // fragColor = vec4(baseColor, alpha);
 

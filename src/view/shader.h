@@ -1,7 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "config.h"
+#include "../config.h"
 
 class Shader
 {
