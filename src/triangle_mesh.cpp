@@ -9,26 +9,71 @@ VBO - vertex buffer object: stores vertices in GPU memory
             advantage: send large dage to GPU once, draw many times
 
 */
-TriangleMesh::TriangleMesh()
+Cube::Cube(glm::vec3 size)
 {
+    float l = size.x;
+    float w = size.y;
+    float h = size.z;
 
-    std::vector<float> positions = {
-        -1.0f, -1.0f, 0.0f, // bottom left
-        1.0f, -1.0f, 0.0f,  // bottom right
-        -1.0f, 1.0f, 0.0f,  // top left
-        1.0f, 1.0f, 0.0f    // top right
+    std::vector<float> vertices = {
+        l, w, -h, 1.0f, 1.0f,
+        l, -w, -h, 1.0f, 0.0f,
+        -l, -w, -h, 0.0f, 0.0f,
+        -l, -w, -h, 0.0f, 0.0f,
+        -l, w, -h, 0.0f, 1.0f,
+        l, w, -h, 1.0f, 1.0f,
+
+        -l, -w, h, 0.0f, 0.0f,
+        l, -w, h, 1.0f, 0.0f,
+        l, w, h, 1.0f, 1.0f,
+        l, w, h, 1.0f, 1.0f,
+        -l, w, h, 0.0f, 1.0f,
+        -l, -w, h, 0.0f, 0.0f,
+
+        -l, w, h, 1.0f, 1.0f,
+        -l, w, -h, 1.0f, 0.0f,
+        -l, -w, -h, 0.0f, 0.0f,
+        -l, -w, -h, 0.0f, 0.0f,
+        -l, -w, h, 0.0f, 1.0f,
+        -l, w, h, 1.0f, 1.0f,
+
+        l, -w, -h, 0.0f, 0.0f,
+        l, w, -h, 1.0f, 0.0f,
+        l, w, h, 1.0f, 1.0f,
+        l, w, h, 1.0f, 1.0f,
+        l, -w, h, 0.0f, 1.0f,
+        l, -w, -h, 0.0f, 0.0f,
+
+        -l, -w, -h, 0.0f, 0.0f,
+        l, -w, -h, 1.0f, 0.0f,
+        l, -w, h, 1.0f, 1.0f,
+        l, -w, h, 1.0f, 1.0f,
+        -l, -w, h, 0.0f, 1.0f,
+        -l, -w, -h, 0.0f, 0.0f,
+
+        l, w, h, 1.0f, 1.0f,
+        l, w, -h, 1.0f, 0.0f,
+        -l, w, -h, 0.0f, 0.0f,
+        -l, w, -h, 0.0f, 0.0f,
+        -l, w, h, 0.0f, 1.0f,
+        l, w, h, 1.0f, 1.0f
+        // first three are xyz positions, last two are uv tex coords
 
     };
 
-    std::vector<int> elements = {0, 1, 2, 2, 1, 3};
-
+    // std::vector<int> elements;
+    // std::vector<int> baseElements = {0, 1, 2, 2, 1, 3};
+    // for (int i = 0; i < 6; i++)
+    // {
+    //     for (int j = 0; j < 6; j++)
+    //     {
+    //         elements.push_back(baseElements[j] + (4 * i));
+    //     }
+    // }
     std::vector<int> colorIndices = {0, 1, 2, 3};
 
-    vertex_count = 6;
+    vertex_count = 36;
 
-    /*
-
-    */
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
@@ -37,8 +82,9 @@ TriangleMesh::TriangleMesh()
     /*
     glGenBuffers returns n buffer object names in buffers. There is no guarantee that the names form a contiguous set of integers; however, it is guaranteed that none of the returned names was in use immediately before the call to glGenBuffers.
     */
-    glGenBuffers(2, VBOs.data());
+    // glGenBuffers(2, VBOs.data());
 
+    glGenBuffers(1, &VBOs[0]);
     /*
     Specifies the target to which the buffer object is bound, which must be one of the buffer binding targets
     */
@@ -49,7 +95,7 @@ TriangleMesh::TriangleMesh()
     Static: the data store contents will be modified once and used many times.
     Draw: the data store contents are modified by the application, and used as the source for GL drawing and image specification commands.
     */
-    glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(float), positions.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     /* when we send data to GPU it doesn't know how to interpret it
      we need to tell it how to interpret it.
@@ -63,31 +109,36 @@ TriangleMesh::TriangleMesh()
      stride (space between consecutive vertex attributes),
      offset (where the attribute begins in the buffer) position
     */
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
-    // color indices
-    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-    glBufferData(GL_ARRAY_BUFFER, colorIndices.size() * sizeof(int), colorIndices.data(), GL_STATIC_DRAW);
-    glVertexAttribIPointer(1, 1, GL_INT, 4, (void *)0);
+    // texture indices
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // element buffer
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(int), elements.data(), GL_STATIC_DRAW);
+    // // color indices
+    // glGenBuffers(1, &VBOs[1]);
+    // glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+    // glBufferData(GL_ARRAY_BUFFER, colorIndices.size() * sizeof(int), colorIndices.data(), GL_STATIC_DRAW);
+    // glVertexAttribIPointer(2, 1, GL_INT, 1 * sizeof(int), (void *)0);
+    // glEnableVertexAttribArray(2);
+
+    // // element buffer
+    // glGenBuffers(1, &EBO);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(int), elements.data(), GL_STATIC_DRAW);
 }
 
-void TriangleMesh::draw()
+void Cube::draw()
 {
     glBindVertexArray(VAO);
     // draw mode, first vertex, count
-    // glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 
-    glDrawElements(GL_TRIANGLES, vertex_count, GL_UNSIGNED_INT, 0);
+    // glDrawElements(GL_TRIANGLES, vertex_count, GL_UNSIGNED_INT, 0);
 }
 
-TriangleMesh::~TriangleMesh()
+Cube::~Cube()
 {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(2, VBOs.data());

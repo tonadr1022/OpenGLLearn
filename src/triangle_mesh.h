@@ -1,11 +1,11 @@
 #include "config.h"
 
-class TriangleMesh
+class Cube
 {
 public:
-    TriangleMesh();
+    Cube(glm::vec3 size);
     void draw();
-    ~TriangleMesh();
+    ~Cube();
 
 private:
     unsigned int EBO, VAO, vertex_count;

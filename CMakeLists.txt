@@ -10,15 +10,20 @@ enable_testing()
 
 find_package(OpenGL REQUIRED)
 
+include_directories(src/vendor src/objects)
+
+
 add_executable(hello_window 
-    src/glad.c
     src/config.h 
+    src/glad.c
     src/main.cpp 
     src/triangle_mesh.cpp
-    src/triangle_mesh.h
     src/config.cpp
-    src/material.h
-    src/stb_image.h)
+    src/material.cpp
+    src/shader.cpp
+    src/CameraSystem.cpp
+    src/App.cpp
+    )
 
 target_include_directories(hello_window PRIVATE dependencies)
 
