@@ -16,14 +16,14 @@ void RenderSystem::update(
         model = glm::translate(model, transform.position);
 
         // arbitrary rotation for now
-        model = glm::rotate(model, glm::radians(transform.eulers.z), {0.0f, 0.0f, 1.0f});
+        float time = static_cast<float>(glfwGetTime()) * 10.0f;
+        model = glm::rotate(model, glm::radians(time), {0.0f, 0.0f, 1.0f});
+
         shader->setMat4("model", model);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, renderComponent.material);
         glBindVertexArray(renderComponent.VAO);
         glDrawArrays(GL_TRIANGLES, 0, renderComponent.vertexCount);
-
-        // model = glm::rotate(model, (float)glfwGetTime() * glm::radians(45.0f), glm::vec3(0.5f, 1.0f, 0.0f));
     }
     glfwSwapBuffers(window);
 }

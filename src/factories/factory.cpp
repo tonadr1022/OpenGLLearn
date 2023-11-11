@@ -38,7 +38,7 @@ unsigned int Factory::make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 
     physicsComponents[entities_made] = physics;
 
     RenderComponent render = make_cube_mesh(glm::vec3(0.5f));
-    render.material = make_texture("../textures/clock.jpg");
+    render.material = make_texture("../src/textures/big_chungus.jpg");
     renderComponents[entities_made] = render;
 
     return entities_made++;
@@ -50,8 +50,6 @@ unsigned int Factory::make_texture(const char *filename)
 
     stbi_set_flip_vertically_on_load(true);
     unsigned char *data = stbi_load(filename, &width, &height, &channels, STBI_rgb_alpha);
-
-    // std::cout << *data << '\n';
 
     unsigned int texture;
 

@@ -10,7 +10,7 @@ enable_testing()
 
 find_package(OpenGL REQUIRED)
 
-include_directories(src/vendor src/objects)
+include_directories(src/vendor)
 
 
 add_executable(hello_window 

@@ -6,7 +6,7 @@ int main()
 {
     App *app = new App();
     Factory *factory = new Factory(app->physicsComponents, app->renderComponents, app->transformComponents);
-    factory->make_cube({0.0f, 0.0f, 0.5f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 10.0f});
+    factory->make_cube({0.0f, -3.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 10.0f});
 
     unsigned int cameraEntityID = factory->make_camera({0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f});
 
