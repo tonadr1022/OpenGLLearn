@@ -10,7 +10,9 @@ enable_testing()
 
 find_package(OpenGL REQUIRED)
 
+
 include_directories(src/vendor)
+include_directories(src/vendor/imgui)
 
 
 add_executable(hello_window 
@@ -26,6 +28,14 @@ add_executable(hello_window
     src/view/shader.cpp
     src/controller/app.cpp
     src/factories/factory.cpp
+    src/vendor/imgui/imgui.cpp
+    src/vendor/imgui/imgui_demo.cpp
+    src/vendor/imgui/imgui_draw.cpp
+    src/vendor/imgui/imgui_widgets.cpp
+    src/vendor/imgui/imgui_impl_glfw.cpp
+    src/vendor/imgui/imgui_impl_opengl3.cpp
+    src/vendor/imgui/imgui_tables.cpp
+    src/vendor/imgui/imgui_widgets.cpp
     )
 
 target_include_directories(hello_window PRIVATE dependencies)

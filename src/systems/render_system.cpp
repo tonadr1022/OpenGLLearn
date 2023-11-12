@@ -6,7 +6,7 @@ void RenderSystem::update(
     std::map<unsigned int, TransformComponent> &transformComponents,
     std::map<unsigned int, RenderComponent> &renderComponents)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (auto &[entityID, renderComponent] : renderComponents)
     {
@@ -25,5 +25,4 @@ void RenderSystem::update(
         glBindVertexArray(renderComponent.VAO);
         glDrawArrays(GL_TRIANGLES, 0, renderComponent.vertexCount);
     }
-    glfwSwapBuffers(window);
 }

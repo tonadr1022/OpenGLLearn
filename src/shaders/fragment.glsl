@@ -14,7 +14,7 @@ const vec3 sunDirection = normalize(vec3(-1.0, 1.0, 1.0));
 void main() {
     float lightStrength = max(0.2, dot(normal, sunDirection));
     vec3 baseColor = texture(material, texCoord).rgb;
-    // vec3 baseColor = vec3(1.0, 1.0, 1.0);
+    // vec3 baseColor = vec3(0.0,0.0,0.0);
     fragColor = vec4(baseColor, 1.0);
     // fragColor = vec4(baseColor * lightStrength, 1.0);
     // float alpha = texture(mask, texCoord).r;

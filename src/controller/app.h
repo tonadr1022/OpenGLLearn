@@ -29,14 +29,22 @@ public:
     unsigned int cameraID;
 
 private:
+    static App *instance;
     GLFWwindow *window;
     void init_glfw();
-
+    glm::vec4 clear_color;
+    bool show_demo_window;
     void updateDeltaTime();
+
+    static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
+    static void mouse_callback(GLFWwindow *window, double xOffset, double yOffset);
+    static void scroll_callback(GLFWwindow *window, double xOffset, double yOffset);
+
     float deltaTime;
     float lastFrameTime;
 
     Shader *shader;
+    std::vector<Shader> shaders;
     MotionSystem *motionSystem;
     CameraSystem *cameraSystem;
     RenderSystem *renderSystem;

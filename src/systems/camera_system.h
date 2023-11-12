@@ -13,13 +13,16 @@ public:
                 unsigned int cameraEntityID, CameraComponent &cameraComponent, float deltaTime);
     void handleKeyInput(glm::vec3 &position, CameraComponent &cameraComponent);
     void handleMouseMovement(glm::vec3 &eulers);
+    bool isFirstMouse;
+    float fov;
 
 private:
     Shader *shader;
     GLFWwindow *window;
     glm::vec3 global_up = {0.0f, 0.0f, 1.0f};
-    float fov;
+
     float cameraSpeed;
     float mouseSensitivity;
-    bool isFirstMouse;
+
+    bool mouseEnabled;
 };

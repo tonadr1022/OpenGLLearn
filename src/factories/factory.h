@@ -16,6 +16,7 @@ public:
 
     unsigned int make_camera(glm::vec3 position, glm::vec3 eulers);
     unsigned int make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
+    unsigned int make_sphere(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
 
 private:
     unsigned int entities_made;
@@ -29,6 +30,7 @@ private:
     std::vector<unsigned int> EBOs;
     std::vector<unsigned int> textures;
 
+    RenderComponent make_sphere_mesh(float radius);
     RenderComponent make_cube_mesh(glm::vec3 size);
     unsigned int make_texture(const char *filename);
 };
