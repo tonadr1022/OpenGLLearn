@@ -15,7 +15,7 @@ public:
     ~Factory();
 
     unsigned int make_camera(glm::vec3 position, glm::vec3 eulers);
-    unsigned int make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
+    unsigned int make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity, std::string texturePath);
     unsigned int make_sphere(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity);
 
 private:

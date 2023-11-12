@@ -56,7 +56,10 @@ App::App() : deltaTime(0.0f), lastFrameTime(0.0f)
 
 App::~App()
 {
-    shader->unbind();
+    for (Shader *shader : this->shaders)
+    {
+        shader->unbind();
+    }
 
     delete motionSystem;
     delete cameraSystem;
@@ -141,19 +144,21 @@ void App::init_opengl()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
-
-    this->shader = new Shader("../src/shaders/vertex.glsl", "../src/shaders/fragment.glsl");
+    Shader *defaultShader = new Shader("../src/shaders/vertex.glsl", "../src/shaders/fragment.glsl");
+    Shader *lightShader = new Shader("../src/shaders/light/vertex.glsl", "../src/shaders/light/fragment.glsl");
+    shaders.push_back(defaultShader);
+    shaders.push_back(lightShader);
 
     // must use program before making uniform calls
-    shader->bind();
-    shader->setInt("material", 0);
+    shaders[0]->bind();
+    shaders[0]->setInt("material", 0);
 }
 
 void App::init_systems()
 {
     this->motionSystem = new MotionSystem();
-    this->cameraSystem = new CameraSystem(shader, window);
-    this->renderSystem = new RenderSystem(shader, window);
+    this->cameraSystem = new CameraSystem(shaders[0], window);
+    this->renderSystem = new RenderSystem(shaders, window);
 }
 
 void App::updateDeltaTime()

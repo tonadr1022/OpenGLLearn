@@ -43,8 +43,7 @@ private:
     float deltaTime;
     float lastFrameTime;
 
-    Shader *shader;
-    std::vector<Shader> shaders;
+    std::vector<Shader *> shaders;
     MotionSystem *motionSystem;
     CameraSystem *cameraSystem;
     RenderSystem *renderSystem;

@@ -7,12 +7,12 @@
 class RenderSystem
 {
 public:
-    RenderSystem(Shader *shader, GLFWwindow *window);
+    RenderSystem(std::vector<Shader *> shaders, GLFWwindow *window);
     void update(
         std::map<unsigned int, TransformComponent> &transformComponents,
         std::map<unsigned int, RenderComponent> &renderComponents);
 
 private:
-    Shader *shader;
+    std::vector<Shader *> shaders;
     GLFWwindow *window;
 };

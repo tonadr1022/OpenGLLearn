@@ -126,7 +126,7 @@ RenderComponent Factory::make_sphere_mesh(float radius)
     return record;
 }
 
-unsigned int Factory::make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity)
+unsigned int Factory::make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 eulerVelocity, std::string texturePath)
 {
     TransformComponent transform;
     transform.position = position;
@@ -140,7 +140,7 @@ unsigned int Factory::make_cube(glm::vec3 position, glm::vec3 eulers, glm::vec3 
 
     RenderComponent render = make_cube_mesh(glm::vec3(0.5f));
     render.shaderIndex = 1;
-    render.material = make_texture("../src/textures/big_chungus.jpg");
+    render.material = make_texture(texturePath.c_str());
     renderComponents[entities_made] = render;
 
     return entities_made++;

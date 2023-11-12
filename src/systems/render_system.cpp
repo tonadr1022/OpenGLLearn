@@ -1,6 +1,6 @@
 #include "render_system.h"
 
-RenderSystem::RenderSystem(Shader *shader, GLFWwindow *window) : window(window), shader(shader) {}
+RenderSystem::RenderSystem(std::vector<Shader *> shaders, GLFWwindow *window) : window(window), shaders(shaders) {}
 
 void RenderSystem::update(
     std::map<unsigned int, TransformComponent> &transformComponents,
@@ -18,8 +18,10 @@ void RenderSystem::update(
         // arbitrary rotation for now
         float time = static_cast<float>(glfwGetTime()) * 10.0f;
         model = glm::rotate(model, glm::radians(time), {0.0f, 0.0f, 1.0f});
+        std::cout << renderComponent.shaderIndex << '\n';
+        // shaders[renderComponent.shaderIndex]->bind();
+        shaders[0]->setMat4("model", model);
 
-        shader->setMat4("model", model);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, renderComponent.material);
         glBindVertexArray(renderComponent.VAO);
