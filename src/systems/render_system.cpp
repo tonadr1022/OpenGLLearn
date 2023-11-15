@@ -22,14 +22,10 @@ void RenderSystem::update(
 
         // std::cout << renderComponent.material << "index \n";
         Shader *shader = shaders[renderComponent.shaderIndex];
-        // if (renderComponent.shaderIndex == 1)
-        // {
-        //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        // }
 
         shader->bind();
         shader->setInt("material", 0);
-        shader->setVec3("viewPos", transformComponents[cameraID].position);
+        shader->setVec3("viewPos", cameraComponent.position);
         shader->setMat4("view", viewMatrix);
         shader->setMat4("projection", projectionMatrix);
         shader->setMat4("model", modelMatrix);

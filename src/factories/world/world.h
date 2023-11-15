@@ -1,9 +1,14 @@
+#pragma once
+// #include "../game/game.h"
 #include "chunk/chunk_manager.h"
 #include "../../components/camera_component.h"
+
+class Game;
+
 class World
 {
 public:
-    World(CameraComponent &cameraComponent);
+    World(CameraComponent *cameraComponent, Game *game);
     void RenderWorld();
 
 private:
@@ -11,5 +16,6 @@ private:
     void loadChunks();
     void updateChunks();
 
-    CameraComponent &cameraComponent;
+    CameraComponent *cameraComponent;
+    Game *game;
 };

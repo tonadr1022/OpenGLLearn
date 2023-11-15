@@ -72,7 +72,9 @@ void CameraSystem::handleMouseMovement(glm::vec3 &eulers)
 
 void CameraSystem::update(std::map<unsigned int, TransformComponent> &transformComponents, unsigned int cameraEntityID, CameraComponent &cameraComponent, float deltaTime)
 {
-    glm::vec3 &position = transformComponents[cameraEntityID].position;
+
+    // glm::vec3 &position = transformComponents[cameraEntityID].position;
+    glm::vec3 &position = cameraComponent.position;
     glm::vec3 &eulers = transformComponents[cameraEntityID].eulers;
 
     float theta = glm::radians(eulers.z);

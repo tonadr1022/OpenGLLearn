@@ -1,11 +1,8 @@
 #include "game.h"
 
-void Game::setPlayerPosition()
+int Game::getWorldSeed()
 {
+    return worldSeed;
 }
 
-void Game::initWorld(int seed)
-{
-}
-
-Game::Game(CameraComponent &cameraComponent) : world(cameraComponent) {}
+Game::Game(CameraComponent *cameraComponent, int worldSeed) : world(cameraComponent, this), worldSeed(worldSeed) {}

@@ -11,6 +11,8 @@
 #include "../systems/render_system.h"
 #include "../factories/factory.h"
 #include "../view/shader.h"
+#include "../factories/game/game.h"
+
 class App
 {
 public:
@@ -49,6 +51,8 @@ private:
     MotionSystem *motionSystem;
     CameraSystem *cameraSystem;
     RenderSystem *renderSystem;
+
+    Game game;
 
     // void init_glfw();
 

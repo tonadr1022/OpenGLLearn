@@ -45,10 +45,21 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
     }
 }
 
-App::App() : deltaTime(0.0f), lastFrameTime(0.0f), factory(new Factory(this->physicsComponents, this->renderComponents, this->transformComponents))
+App::App() : deltaTime(0.0f), lastFrameTime(0.0f), factory(new Factory(this->physicsComponents, this->renderComponents, this->transformComponents)),
+             game(nullptr, 12345)
 {
     instance = this;
     this->show_demo_window = true;
+
+    unsigned int cameraEntityID = factory->make_camera({-5.0f, 5.0f, 4.0f}, {0.0f, 0.0f, 0.0f});
+
+    CameraComponent *cameraComponent = new CameraComponent();
+    cameraComponent->targetPos = glm::vec3(0.0f);
+    cameraComponent->position = glm::vec3(0.0f);
+    this->cameraComponent = cameraComponent;
+    this->cameraID = cameraEntityID;
+
+    this->game = Game(this->cameraComponent, 12345);
 
     init_glfw();
 }
@@ -158,6 +169,14 @@ void App::init_systems()
     this->motionSystem = new MotionSystem();
     this->cameraSystem = new CameraSystem(window);
     this->renderSystem = new RenderSystem(shaders, window);
+
+    for (int i = 0; i < 16; i++)
+    {
+        for (int j = 0; j < 16; j++)
+        {
+            this->factory->make_chunk({i * 16, j * 16}, "../src/textures/big_chungus.jpg", 0);
+        }
+    }
 }
 
 void App::updateDeltaTime()
@@ -204,7 +223,7 @@ void App::run()
 
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 
-            glm::vec3 cameraPos = transformComponents[cameraID].position;
+            glm::vec3 cameraPos = cameraComponent->position;
             ImGui::Text("Camera Position  %.2f x  %.2f y %.2f z",
                         cameraPos.x, cameraPos.y, cameraPos.z);
             if (ImGui::Button("Camera Mode"))
