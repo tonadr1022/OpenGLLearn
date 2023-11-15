@@ -15,7 +15,6 @@ void App::scroll_callback(GLFWwindow *window, double xOffset, double yOffset)
         newFOV = 1.0f;
     else if (newFOV > 90.0f)
         newFOV = 90.0f;
-    std::cout << newFOV << '\n';
     app->cameraSystem->fov = oldFOV - static_cast<float>(yOffset);
 }
 
@@ -46,7 +45,7 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
     }
 }
 
-App::App() : deltaTime(0.0f), lastFrameTime(0.0f)
+App::App() : deltaTime(0.0f), lastFrameTime(0.0f), factory(new Factory(this->physicsComponents, this->renderComponents, this->transformComponents))
 {
     instance = this;
     this->show_demo_window = true;
@@ -130,7 +129,7 @@ void App::init_glfw()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    this->clear_color = glm::vec4(0.45f, 0.55f, 0.60f, 1.00f);
+    this->clear_color = glm::vec4(0.9f, 1.0f, 0.7f, 1.00f);
 }
 
 void App::init_opengl()
@@ -150,14 +149,14 @@ void App::init_opengl()
     shaders.push_back(lightShader);
 
     // must use program before making uniform calls
-    shaders[0]->bind();
-    shaders[0]->setInt("material", 0);
+    // shaders[0]->bind();
+    // shaders[0]->setInt("material", 0);
 }
 
 void App::init_systems()
 {
     this->motionSystem = new MotionSystem();
-    this->cameraSystem = new CameraSystem(shaders[0], window);
+    this->cameraSystem = new CameraSystem(window);
     this->renderSystem = new RenderSystem(shaders, window);
 }
 
@@ -180,6 +179,7 @@ void App::run()
 {
     while (!glfwWindowShouldClose(window))
     {
+
         updateDeltaTime();
         // renderSystem->update(transformComponents, renderComponents);
 
@@ -197,28 +197,35 @@ void App::run()
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
-            static float f = 0.0f;
-            static int counter = 0;
-
-            ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
-
-            ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
+            ImGui::Begin("Options");
 
             ImGui::SliderFloat("FOV", &cameraSystem->fov, 1.0f, 90.0f); // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float *)&clear_color);    // Edit 3 floats representing a color
 
-            if (ImGui::Button("Button")) // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+
+            glm::vec3 cameraPos = transformComponents[cameraID].position;
+            ImGui::Text("Camera Position  %.2f x  %.2f y %.2f z",
+                        cameraPos.x, cameraPos.y, cameraPos.z);
+            if (ImGui::Button("Camera Mode"))
+            {
+                if (cameraSystem->mode == FPS)
+                {
+                    cameraSystem->mode = ORBIT;
+                }
+                else
+                {
+                    cameraSystem->mode = FPS;
+                }
+            }
+            ImGui::SameLine();
+            ImGui::Text(cameraSystem->mode == FPS ? "FPS" : "ORBIT");
             ImGui::End();
         }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderSystem->update(transformComponents, renderComponents);
+        renderSystem->update(transformComponents, renderComponents, *cameraComponent, cameraID);
 
         // Rendering
         ImGui::Render();

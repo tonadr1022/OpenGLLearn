@@ -9,7 +9,7 @@
 #include "../systems/camera_system.h"
 #include "../systems/motion_system.h"
 #include "../systems/render_system.h"
-
+#include "../factories/factory.h"
 #include "../view/shader.h"
 class App
 {
@@ -20,7 +20,6 @@ public:
     void init_opengl();
     void init_systems();
     void handleInput();
-
     // Component Structures
     std::map<unsigned int, TransformComponent> transformComponents;
     std::map<unsigned int, PhysicsComponent> physicsComponents;
@@ -28,7 +27,10 @@ public:
     CameraComponent *cameraComponent;
     unsigned int cameraID;
 
+    unsigned int numDivisions;
+
 private:
+    Factory *factory;
     static App *instance;
     GLFWwindow *window;
     void init_glfw();

@@ -3,5 +3,5 @@
 
 struct RenderComponent
 {
-    unsigned int material, VAO, vertexCount, shaderIndex;
+    unsigned int material, VAO, EBO, vertexCount, shaderIndex;
 };

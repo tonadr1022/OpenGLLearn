@@ -13,6 +13,7 @@ find_package(OpenGL REQUIRED)
 
 include_directories(src/vendor)
 include_directories(src/vendor/imgui)
+include_directories(src/vendor/fast_noise_lite)
 
 
 add_executable(hello_window 
@@ -26,8 +27,16 @@ add_executable(hello_window
     src/systems/motion_system.cpp
     src/systems/render_system.cpp
     src/view/shader.cpp
+    src/shaders/shader_manager.cpp
     src/controller/app.cpp
     src/factories/factory.cpp
+    src/factories/entity_manager.cpp
+    src/factories/world/chunk/chunklet.cpp
+    src/factories/world/chunk/chunk.cpp
+    src/factories/world/block/block.cpp
+    src/factories/game/game.cpp
+    src/factories/world/world.cpp
+    src/factories/world/generation/terrain_generator.cpp
     src/vendor/imgui/imgui.cpp
     src/vendor/imgui/imgui_demo.cpp
     src/vendor/imgui/imgui_draw.cpp
